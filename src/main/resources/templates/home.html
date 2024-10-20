@@ -1,18 +1,152 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <!-- Importar CSS personalizado -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <!-- Importar Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Importar JavaScript de Materialize -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
-
 <body>
-    <h1 th:text="|Bienvenido a ${name}!|"></h1>
-    <div sec:authorize="isAuthenticated()">
-        <h1 th:inline="text">Hola <span th:remove="tag" sec:authentication="name"></span>!</h1>
-        <h2>Seguridad implementada con Spring Security</h2>
-    </div>
-</body>
+    <!-- Barra de navegación -->
+    <nav>
+        <div class="nav-wrapper navegacion">
+            <!-- <a href="#" class="brand-logo"><img class="logo" th:src="@{/images/logo.jpeg}" alt="logo"></a> -->
+            <a href="#" class="brand-logo"><img class="logo" th:src="@{/images/logotemp.png}" alt="logo"></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+            </ul>
+        </div>
+    </nav>
 
+    <div id="wrapper" class="container-fluid">
+        <section id="carrusel" class="container-fluid" style="padding: 0;">
+            <div class="carousel">
+                <a class="carousel-item" href="#uno"><img th:src="@{/images/carrusel/oferta-1.png}" alt="Oferta 1"></a>
+                <a class="carousel-item" href="#dos"><img th:src="@{/images/carrusel/oferta-2.jpg}" alt="Oferta 2"></a>
+                <a class="carousel-item" href="#tres"><img th:src="@{/images/carrusel/oferta-3.jpg}" alt="Oferta 3"></a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        
+
+        <section id="recetas-destacadas" class="container">
+            <div class="titular box fleft fwidth text-center">
+                <h2>Recetas Destacadas</h2>
+            </div>
+            <div class="row" id="recetas-destacadas-container">
+               
+            </div>
+
+        </section>
+
+        <section id="recetas-nuevas" class="container">
+            <div class="titular box fleft fwidth text-center">
+                <h2>Nuevas Recetas</h2>
+            </div>
+            <div class="row" id="recetas-nuevas-container">
+               
+            </div>
+
+            
+        </section>
+
+        <section id="filtro" class="container">
+            <div class="titular box fleft fwidth text-center">
+                <h2>Filtrar Recetas</h2>
+            </div>
+            <br>
+            <br>
+            <br>
+            <form id="filtro-recetas">
+                <div class="input-field">
+                    <label for="nombre">Nombre de la receta:</label>
+                    <input type="text" id="nombre" placeholder="Buscar por nombre">
+                </div>
+                <div class="input-field">
+                    <label for="tipoCocina">Tipo de cocina:</label>
+                    <input type="text" id="tipoCocina" placeholder="Ej. Italiana, Mexicana">
+                </div>
+                <div class="input-field">
+                    <label for="ingredientes">Ingredientes:</label>
+                    <input type="text" id="ingredientes" placeholder="Ej. Pollo, Arroz">
+                </div>
+                <div class="input-field">
+                    <label for="paisOrigen">País de origen:</label>
+                    <input type="text" id="paisOrigen" placeholder="Ej. España, México">
+                </div>
+                <div class="input-field">
+                    
+                    <select id="dificultad">
+                        <option value="" disabled selected>Seleccione dificultad</option>
+                        <option value="Baja">Baja</option>
+                        <option value="Media">Media</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                    <label for="dificultad">Dificultad:</label>
+                </div>
+                <button type="button" id="filtrarBtn" class="btn waves-effect waves-light">Filtrar</button>
+            </form>
+
+            <br>
+
+            <div class="row" id="recetas-filtradas-container">
+               
+            </div>
+
+        </section>
+        
+    </div>
+
+     <!-- Footer -->
+     <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Seguridad y Calidad</h5>
+                    <p class="grey-text text-lighten-4">Demo para la actividad solicitada</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Enlaces</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Inicio</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2024 Seguridad y Calidad
+                <a class="grey-text text-lighten-4 right" href="#!">Más Información</a>
+            </div>
+        </div>
+    </footer>
+   
+
+    <!-- Importar JavaScript personalizado -->
+    <script th:src="@{/js/index.js}"></script>
+    <script th:src="@{/js/carrusel.js}"></script>
+
+    <script>
+        // Inicializar los selects de Materialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const elems = document.querySelectorAll('select');
+            const instances = M.FormSelect.init(elems);
+        });
+    
+        // Resto de tu código JavaScript...
+    </script>
+
+</body>
 </html>
