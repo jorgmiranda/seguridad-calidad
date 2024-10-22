@@ -1,0 +1,120 @@
+.navegacion{
+    background-color: #1f1f1f;
+    padding: 0 10% 0 10%;
+    height: 80px;
+    line-height: 80px;
+}
+
+.logo{
+    width: 100px; 
+    height: auto; 
+}
+
+/*Estilos titulos */
+.titular{
+    height: 125px;
+    background: rgba(0, 0, 0, 0) url("../images/lin-bg-titular.png") repeat-x scroll
+        center center / 100% 1px;
+}
+
+.fwidth {
+    width: 100%;
+}
+.fleft {
+    float: left;
+}
+
+.box {
+    display: block;
+    height: auto;
+    overflow: hidden;
+}
+
+/*Estimos tag h2 y h1 dentro de una clase titular*/
+.titular h2, .titular h1 {
+    font-family: "Oswald-Light";
+    text-transform: uppercase;
+    font-size: 28px !important;
+    color: #1f1f1f;
+    letter-spacing: 3.11px;
+    line-height: 43px !important;
+    padding: 0 40px;
+    background: #fff;
+    display: inline-block;
+    margin-top: 33px !important;
+}
+
+.container {
+    max-width: 100%;
+    width: 100% !important;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+
+
+/*CSS Carrusel*/
+.carousel {
+    height: 600px; /* Ajusta la altura del carrusel */
+}
+
+.carousel .carousel-item {
+    visibility: hidden; /* Oculta todos los elementos inicialmente */
+    width: 90% !important;
+    height: auto !important; 
+    position: relative; /* Cambia a relative para que se alineen correctamente */
+    display: block; /* Asegura que el elemento sea un bloque, permitiendo cambios */
+}
+
+/* Estilo para el elemento visible */
+.carousel .carousel-item.active {
+    visibility: visible; /* Muestra el elemento activo */
+}
+
+.carousel-item img {
+    width: 100%; /* Mantiene el ancho completo del contenedor */
+    height: 100%; /* Asegura que la imagen ocupe toda la altura */
+    object-fit: cover;
+}
+
+/*CSS muestra de recetas*/
+
+.receta {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Color de fondo opcional */
+}
+
+.receta-imagen {
+    width: 100%; 
+    height: 150px; 
+    object-fit: cover; 
+}
+
+/*CSS Filtro*/
+#filtro {
+    margin: 20px 0;
+}
+
+.input-field {
+    margin-bottom: 20px;
+}
+
+/* Footer */
+.page-footer {
+    background-color: #1f1f1f !important; /* Color de fondo */
+    color: white; /* Color del texto */
+}
+
+.footer-copyright {
+    background-color: #1f1f1f !important; /* Color de fondo para la sección de derechos de autor */
+}
