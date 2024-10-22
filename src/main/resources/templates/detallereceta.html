@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Detalle de recetas</title>
     <!-- Importar CSS personalizado -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Importar Materialize CSS -->
@@ -40,71 +40,16 @@
     <div class="container">
 
 
-        <section id="recetas-destacadas" class="container">
+        <section id="recetas-detalle" class="container">
             <div class="titular box fleft fwidth text-center">
-                <h2>Recetas Destacadas</h2>
+                <h2>Recetas con detalles</h2>
             </div>
-            <div class="row" id="recetas-destacadas-container">
+            <div class="row" id="recetas-detalle-container">
                
             </div>
 
         </section>
 
-        <section id="recetas-nuevas" class="container">
-            <div class="titular box fleft fwidth text-center">
-                <h2>Nuevas Recetas</h2>
-            </div>
-            <div class="row" id="recetas-nuevas-container">
-               
-            </div>
-
-            
-        </section>
-
-        <section id="filtro" class="container">
-            <div class="titular box fleft fwidth text-center">
-                <h2>Filtrar Recetas</h2>
-            </div>
-            <br>
-            <br>
-            <br>
-            <form id="filtro-recetas">
-                <div class="input-field">
-                    <label for="nombre">Nombre de la receta:</label>
-                    <input type="text" id="nombre" placeholder="Buscar por nombre">
-                </div>
-                <div class="input-field">
-                    <label for="tipoCocina">Tipo de cocina:</label>
-                    <input type="text" id="tipoCocina" placeholder="Ej. Italiana, Mexicana">
-                </div>
-                <div class="input-field">
-                    <label for="ingredientes">Ingredientes:</label>
-                    <input type="text" id="ingredientes" placeholder="Ej. Pollo, Arroz">
-                </div>
-                <div class="input-field">
-                    <label for="paisOrigen">País de origen:</label>
-                    <input type="text" id="paisOrigen" placeholder="Ej. España, México">
-                </div>
-                <div class="input-field">
-                    
-                    <select id="dificultad">
-                        <option value="" disabled selected>Seleccione dificultad</option>
-                        <option value="Baja">Baja</option>
-                        <option value="Media">Media</option>
-                        <option value="Alta">Alta</option>
-                    </select>
-                    <label for="dificultad">Dificultad:</label>
-                </div>
-                <button type="button" id="filtrarBtn" class="btn waves-effect waves-light">Filtrar</button>
-            </form>
-
-            <br>
-
-            <div class="row" id="recetas-filtradas-container">
-               
-            </div>
-
-        </section>
         
     </div>
 
@@ -136,7 +81,7 @@
    
 
     <!-- Importar JavaScript personalizado -->
-    <script th:src="@{/js/index.js}"></script>
+    <script th:src="@{/js/detalle.js}"></script>
     <script th:src="@{/js/carrusel.js}"></script>
 
     <script>

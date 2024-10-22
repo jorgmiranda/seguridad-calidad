@@ -37,13 +37,13 @@ public class WebSecurityConfig {
     public UserDetailsService users() {
         // The builder will ensure the passwords are encoded before saving in memory
         UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("password"))
+                .username("pe.falfan@duocuc.cl")
+                .password(passwordEncoder().encode("123456"))
                 .roles("USER")
                 .build();
         UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("password"))
+                .username("radahn@duocuc.cl")
+                .password(passwordEncoder().encode("123456"))
                 .roles("USER", "ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);

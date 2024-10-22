@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
     <meta charset="UTF-8">
-    <title>CodePen - Finance Mobile Application-UX/UI Design Screen One</title>
+    <title>Login</title>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link th:href="@{/css/login.css}" rel="stylesheet">
@@ -32,11 +32,12 @@
       <polygon style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" points="-50,-50 -50,50 50,50 50,-50 "></polygon>
     </g>
   </svg>
+  <form th:action="@{/login}" method="post">
     <div class="email">
         <label>Correo</label>
         <div class="sec-2">
             <ion-icon name="mail-outline"></ion-icon>
-            <input type="email" id="email" placeholder="Username@gmail.com"/>
+            <input type="email" id="email" name="username" placeholder="Username@gmail.com"/>
         </div>
     </div>
 
@@ -44,11 +45,12 @@
         <label >Contraseña</label>
         <div class="sec-2">
             <ion-icon name="lock-closed-outline"></ion-icon>
-            <input class="pas" type="password" id="password" placeholder="············"/>
+            <input class="pas" type="password" id="password"  name="password" placeholder="············"/>
             <ion-icon class="show-hide" name="eye-outline"></ion-icon>
         </div>
     </div>
     <button id="ingresarBtn" class="login">Ingresar </button>
+  </form>
     <div class="footer"><span>Registrarme</span><span>Olvidaste tu contraseña?</span></div>
 </div>
 <!-- partial -->
