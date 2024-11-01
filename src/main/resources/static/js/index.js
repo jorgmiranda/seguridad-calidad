@@ -143,8 +143,8 @@ function mostrarNuevasRecetas() {
 
 // Llamar a las funciones al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    mostrarRecetasDestacadas();
-    mostrarNuevasRecetas();
+    //mostrarRecetasDestacadas();
+   // mostrarNuevasRecetas();
 });
 
 

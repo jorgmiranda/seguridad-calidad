@@ -45,7 +45,18 @@
                 <h2>Recetas Destacadas</h2>
             </div>
             <div class="row" id="recetas-destacadas-container">
-               
+                <div th:each="receta : ${recetasPorPopularidad}" class="col s4">
+                    <div class="receta">
+                        <h3 th:text="${receta.nombre}">Nombre de la receta</h3>
+                        <img th:src="${receta.urlImagen}" th:alt="${receta.nombre}" class="receta-imagen" />
+                        <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                        <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                        <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                        <!-- <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> -->
+                        <!-- <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p> -->
+                    </div>
+                </div>
+                
             </div>
 
         </section>
@@ -55,7 +66,17 @@
                 <h2>Nuevas Recetas</h2>
             </div>
             <div class="row" id="recetas-nuevas-container">
-               
+                <div th:each="receta : ${recetasPorFecha}" class="col s4">
+                <div class="receta">
+                    <h3 th:text="${receta.nombre}">Nombre de la receta</h3>
+                    <img th:src="${receta.urlImagen}" th:alt="${receta.nombre}" class="receta-imagen" />
+                    <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                    <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                    <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                    <!-- <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> -->
+                    <!-- <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p> -->
+                </div>
+            </div>
             </div>
 
             
@@ -68,26 +89,27 @@
             <br>
             <br>
             <br>
-            <form id="filtro-recetas">
+            <form id="filtro-recetas" th:action="@{/filtrar}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <div class="input-field">
                     <label for="nombre">Nombre de la receta:</label>
-                    <input type="text" id="nombre" placeholder="Buscar por nombre">
+                    <input type="text" id="nombre" name="nombre" placeholder="Buscar por nombre">
                 </div>
                 <div class="input-field">
                     <label for="tipoCocina">Tipo de cocina:</label>
-                    <input type="text" id="tipoCocina" placeholder="Ej. Italiana, Mexicana">
+                    <input type="text" id="tipoCocina" name="tipoCocina" placeholder="Ej. Italiana, Mexicana">
                 </div>
                 <div class="input-field">
                     <label for="ingredientes">Ingredientes:</label>
-                    <input type="text" id="ingredientes" placeholder="Ej. Pollo, Arroz">
+                    <input type="text" id="ingredientes" name="ingredientes" placeholder="Ej. Pollo, Arroz">
                 </div>
                 <div class="input-field">
                     <label for="paisOrigen">País de origen:</label>
-                    <input type="text" id="paisOrigen" placeholder="Ej. España, México">
+                    <input type="text" id="paisOrigen" name="paisOrigen" placeholder="Ej. España, México">
                 </div>
                 <div class="input-field">
                     
-                    <select id="dificultad">
+                    <select id="dificultad" name="dificultad">
                         <option value="" disabled selected>Seleccione dificultad</option>
                         <option value="Baja">Baja</option>
                         <option value="Media">Media</option>
@@ -95,13 +117,23 @@
                     </select>
                     <label for="dificultad">Dificultad:</label>
                 </div>
-                <button type="button" id="filtrarBtn" class="btn waves-effect waves-light">Filtrar</button>
+                <button type="submit" id="filtrarBtn" class="btn waves-effect waves-light">Filtrar</button>
             </form>
 
             <br>
 
             <div class="row" id="recetas-filtradas-container">
-               
+                <div th:each="receta : ${recetasPorFiltro}" class="col s4">
+                    <div class="receta">
+                        <h3 th:text="${receta.nombre}">Nombre de la receta</h3>
+                        <img th:src="${receta.urlImagen}" th:alt="${receta.nombre}" class="receta-imagen" />
+                        <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                        <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                        <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                        <!-- <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> -->
+                        <!-- <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p> -->
+                    </div>
+                </div>
             </div>
 
         </section>
@@ -136,7 +168,7 @@
    
 
     <!-- Importar JavaScript personalizado -->
-    <script th:src="@{/js/index.js}"></script>
+    <!-- <script th:src="@{/js/index.js}"></script> -->
     <script th:src="@{/js/carrusel.js}"></script>
 
     <script>

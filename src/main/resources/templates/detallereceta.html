@@ -45,7 +45,24 @@
                 <h2>Recetas con detalles</h2>
             </div>
             <div class="row" id="recetas-detalle-container">
-               
+                <div th:each="receta : ${recetas}" class="col s4">
+                    <div class="receta">
+                        <h3 th:text="${receta.nombre}">Nombre de la receta</h3>
+                        <img th:src="${receta.urlImagen}" th:alt="${receta.nombre}" class="receta-imagen" />
+                        <p><strong>Pais de Origen:</strong> <span th:text="${receta.paisDeOrigen}">Pais de Origen</span></p>
+                        <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                        <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                        <p><strong>Instrucciones:</strong> <span th:text="${receta.instruccionesPreparacion}">Instrucciones</span></p>
+                        <p><strong>Ingredientes:</strong></p>
+                        <ul>
+                            <li th:each="ingrediente : ${receta.recetaIngredientes}" th:text="${ingrediente.nombreIngrediente}"></li>
+                        </ul>
+                        <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                        <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> 
+                        <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p>
+                    </div>
+
+                
             </div>
 
         </section>

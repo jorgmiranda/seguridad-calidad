@@ -127,7 +127,7 @@ function mostrarRecetasDetalladas() {
 
 // Llamar a las funciones al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    mostrarRecetasDetalladas();
+    //mostrarRecetasDetalladas();
 });
 
 
