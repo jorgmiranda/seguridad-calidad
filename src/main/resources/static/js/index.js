@@ -173,6 +173,6 @@ function filtrarRecetas() {
 }
 
 // Llamar a la función de filtrado al hacer clic en el botón
-document.getElementById('filtrarBtn').addEventListener('click', filtrarRecetas);
+//document.getElementById('filtrarBtn').addEventListener('click', filtrarRecetas);
 
 

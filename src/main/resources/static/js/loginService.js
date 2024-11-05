@@ -1,4 +1,4 @@
-const user  = {email : "", password :""};
+
 
 const usuariosRegistrados = [
     {

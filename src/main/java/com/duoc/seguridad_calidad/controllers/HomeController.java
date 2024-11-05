@@ -19,7 +19,7 @@ import com.duoc.seguridad_calidad.dto.RecetaParcial;
 @Controller
 public class HomeController {
 
-    
+
     @GetMapping("/home")
     public String home(@RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name, Model model){
         //Se obtienen las recetas
@@ -79,6 +79,21 @@ public class HomeController {
                         @RequestParam(required = false) String paisOrigen,
                         @RequestParam(required = false) String dificultad,
                         Model model){
+
+        if (!isValidInput(nombre) || !isValidInput(tipoCocina) ||
+        !isValidInput(ingredientes) || !isValidInput(paisOrigen)) {
+
+            return "home"; //redirigir a una página de error en el futuro
+        }
+
+        List<String> validDifficulties = Arrays.asList("Baja", "Media", "Alta");
+
+        if (!validDifficulties.contains(dificultad)) {
+
+            return "home"; //redirigir a una página de error en el futuro
+        }
+
+
          //Se obtienen las recetas
          List<RecetaParcial> recetas = obtenerRecetas();
 
@@ -105,6 +120,12 @@ public class HomeController {
             
         model.addAttribute("name", name);
         return "home";              
+    }
+
+
+    private boolean isValidInput(String input) {
+        // Implementa la lógica de validación, por ejemplo, longitud y caracteres permitidos
+        return input != null && input.length() < 255 && input.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*$");
     }
 
     private List<RecetaParcial> obtenerRecetas(){
