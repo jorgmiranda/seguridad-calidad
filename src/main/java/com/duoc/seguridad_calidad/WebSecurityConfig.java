@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/._darcs", "/.bzr", "/.hg", "/BitKeeper").denyAll()
                         .requestMatchers("/", "/home", "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll() 
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
@@ -29,7 +31,21 @@ public class WebSecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll())
-                .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll())
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; " +
+                                                "script-src 'self'  https://cdnjs.cloudflare.com https://unpkg.com; " +
+                                                "img-src 'self' https://i.blogs.es https://www.gourmet.cl https://comedera.com https://www.nestleprofessional-latam.com https://assets.tmecosys.com; " +
+                                                "style-src 'self'  https://cdnjs.cloudflare.com; " +
+                                                "font-src 'self'; " +
+                                                "connect-src 'self'; " +
+                                                "frame-ancestors 'none';" +
+                                                "form-action 'self' http://localhost:8080  http://localhost:8081;"))
+                
+
+                );
+                
                 
         return http.build();
     }

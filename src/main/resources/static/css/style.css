@@ -72,6 +72,9 @@
     position: relative; /* Cambia a relative para que se alineen correctamente */
     display: block; /* Asegura que el elemento sea un bloque, permitiendo cambios */
 }
+#carrusel{
+    padding: 0;
+}
 
 /* Estilo para el elemento visible */
 .carousel .carousel-item.active {

@@ -7,9 +7,9 @@
     <!-- Importar CSS personalizado -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Importar Materialize CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link th:href="@{/css/materialize.min.css}" rel="stylesheet">
     <!-- Importar JavaScript de Materialize -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script th:src="@{/js/materialize.min.js}"></script>
 </head>
 <body>
     <!-- Barra de navegación -->
@@ -26,7 +26,7 @@
     </nav>
 
     <div id="wrapper" class="container-fluid">
-        <section id="carrusel" class="container-fluid" style="padding: 0;">
+        <section id="carrusel" class="container-fluid">
             <div class="carousel">
                 <a class="carousel-item" href="#uno"><img th:src="@{/images/carrusel/oferta-1.png}" alt="Oferta 1"></a>
                 <a class="carousel-item" href="#dos"><img th:src="@{/images/carrusel/oferta-2.jpg}" alt="Oferta 2"></a>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="input-field">
                     
-                    <select id="dificultad" name="dificultad">
+                    <select id="dificultad" name="dificultad" autocomplete="off" autocorrect="off">
                         <option value="" disabled selected>Seleccione dificultad</option>
                         <option value="Baja">Baja</option>
                         <option value="Media">Media</option>
@@ -167,19 +167,10 @@
     </footer>
    
 
-    <!-- Importar JavaScript personalizado -->
-    <!-- <script th:src="@{/js/index.js}"></script> -->
+
     <script th:src="@{/js/carrusel.js}"></script>
 
-    <script>
-        // Inicializar los selects de Materialize
-        document.addEventListener('DOMContentLoaded', function() {
-            const elems = document.querySelectorAll('select');
-            const instances = M.FormSelect.init(elems);
-        });
-    
-        // Resto de tu código JavaScript...
-    </script>
+  
 
 </body>
 </html>
