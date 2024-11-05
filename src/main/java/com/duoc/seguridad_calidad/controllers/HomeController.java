@@ -18,6 +18,7 @@ import com.duoc.seguridad_calidad.dto.RecetaParcial;
 
 @Controller
 public class HomeController {
+
     
     @GetMapping("/home")
     public String home(@RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name, Model model){
@@ -105,8 +106,6 @@ public class HomeController {
         model.addAttribute("name", name);
         return "home";              
     }
-
-
 
     private List<RecetaParcial> obtenerRecetas(){
         RestTemplate restTemplate = new RestTemplate();
