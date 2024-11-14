@@ -44,7 +44,11 @@ public class WebSecurityConfig {
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()).disable())
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/._darcs", "/.bzr", "/.hg", "/BitKeeper").denyAll()
-                        .requestMatchers(HttpMethod.POST, "/filtrar").permitAll() 
+                        .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
+                        //Quitar 
+                        .requestMatchers(HttpMethod.GET, "/crearreceta").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/publicar").permitAll()
+                        //Cierre
                         .requestMatchers("/", "/home", "/login", "/testing", "/ingresar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/testing").permitAll()
