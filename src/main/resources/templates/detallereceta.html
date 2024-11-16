@@ -60,6 +60,7 @@
                         <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
                         <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> 
                         <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p>
+                        <a th:href="@{/verreceta/{id}(id=${receta.id})}" class="btn">Ver Receta</a>
                     </div>
 
                 

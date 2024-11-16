@@ -46,8 +46,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/._darcs", "/.bzr", "/.hg", "/BitKeeper").denyAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
                         //Quitar 
-                        .requestMatchers(HttpMethod.GET, "/crearreceta").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/publicar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/crearreceta", "/vermisrecetas/**", "/editarmireceta/**","/verreceta/**", "/detallereceta").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/publicar", "/editar/**").permitAll()
                         //Cierre
                         .requestMatchers("/", "/home", "/login", "/testing", "/ingresar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
@@ -59,19 +59,20 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .permitAll())
                 .logout((logout) -> logout.permitAll())
-                .headers(headers -> headers
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; " +
-                                                "script-src 'self'  https://cdnjs.cloudflare.com https://unpkg.com; " +
-                                                "img-src 'self' https://i.blogs.es https://www.gourmet.cl https://comedera.com https://www.nestleprofessional-latam.com https://assets.tmecosys.com; " +
-                                                "style-src 'self'  https://cdnjs.cloudflare.com; " +
-                                                "font-src 'self'; " +
-                                                "connect-src 'self'; " +
-                                                "frame-ancestors 'none';" +
-                                                "form-action 'self' http://localhost:8080  http://localhost:8081;"))
+                // .headers(headers -> headers
+                //         .contentSecurityPolicy(csp -> csp
+                //                 .policyDirectives("default-src 'self'; " +
+                //                                 "script-src 'self'  https://cdnjs.cloudflare.com https://unpkg.com; " +
+                //                                 "img-src 'self' https://i.blogs.es https://www.gourmet.cl https://comedera.com https://www.nestleprofessional-latam.com https://assets.tmecosys.com; " +
+                //                                 "style-src 'self'  https://cdnjs.cloudflare.com; " +
+                //                                 "font-src 'self'; " +
+                //                                 "connect-src 'self'; " +
+                //                                 "frame-ancestors 'none';" +
+                //                                 "form-action 'self' http://localhost:8080  http://localhost:8081;"))
 
 
-                );
+                // )
+                ;
 
                 
         return http.build();

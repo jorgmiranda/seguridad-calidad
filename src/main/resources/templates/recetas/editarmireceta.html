@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Receta</title>
+    <title>Editar Receta</title>
     <!-- Importar CSS personalizado -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Importar Materialize CSS -->
@@ -52,66 +52,81 @@
 
         <section id="publicar" class="container">
             <div class="titular box fleft fwidth text-center">
-                <h2>Publicar una Receta</h2>
+                <h2>Editar una Receta</h2>
             </div>
             <br>
             <br>
             <br>
-            <form id="publicar-recetas" th:action="@{/publicar}" method="post" enctype="multipart/form-data">
+            <form id="editar-recetas" th:action="@{/editar/{id}(id=${receta.id})}" th:object="${receta}" method="post" enctype="multipart/form-data">
+                <!-- Token CSRF (descomentar si es necesario) -->
                 <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+            
                 <div class="input-field">
-                    <label for="nombre">Nombre de la receta:</label>
-                    <input type="text"  id="nombre" name="nombre" placeholder="Buscar por nombre">
+                    <label for="nombre" class="active">Nombre de la receta:</label>
+                    <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre de la receta">
                 </div>
+            
                 <div class="input-field">
                     <label for="ingredientes" class="active">Ingredientes</label>
-                    <select id="ingredientes" name="ingredientes" searchable="Selecicona los ingredientes" multiple>
+                    <select id="ingredientes" name="ingredientes" searchable="Selecciona los ingredientes" multiple>
                         <option th:each="ingrediente : ${ingredientesback}" 
-                        th:text="${ingrediente.nombreIngrediente}" 
-                        th:value="${ingrediente.nombreIngrediente}">
+                                th:value="${ingrediente.nombreIngrediente}" 
+                                th:text="${ingrediente.nombreIngrediente}" 
+                                th:selected="${ingredientesSeleccionados.contains(ingrediente.nombreIngrediente)}">
                         </option>
                     </select>
                 </div>
+                
                 <div class="input-field">
-                    <label for="instruccionesPreparacion">Instrucciones de Preparacion:</label>
-                    <textarea id="instruccionesPreparacion" name="instruccionesPreparacion" class="materialize-textarea" placeholder="Escribe una breve descripción de la receta..."></textarea>
-                   
+                    <label for="instruccionesPreparacion" class="active">Instrucciones de Preparación:</label>
+                    <textarea id="instruccionesPreparacion" name="instruccionesPreparacion" 
+                              class="materialize-textarea" 
+                              th:field="*{instruccionesPreparacion}"></textarea>
+                </div>
+            
+                <div class="input-field">
+                    <label for="tipoCocina" class="active">Tipo de cocina:</label>
+                    <input type="text" id="tipoCocina" th:field="*{tipoDeCocina}" placeholder="Ej. Italiana, Mexicana">
+                </div>
+            
+                <div class="input-field">
+                    <label for="paisOrigen" class="active">País de origen:</label>
+                    <input type="text" id="paisOrigen" th:field="*{paisDeOrigen}" placeholder="Ej. España, México">
                 </div>
 
                 <div class="input-field">
-                    <label for="tipoCocina">Tipo de cocina:</label>
-                    <input type="text" id="tipoCocina" name="tipoCocina" placeholder="Ej. Italiana, Mexicana">
+                    <label for="paisOrigen" class="active">Url de video:</label>
+                    <input type="text" id="urlVideo" th:field="*{urlVideo}" placeholder="Youtube, etc">
                 </div>
+            
                 <div class="input-field">
-                    <label for="paisOrigen">País de origen:</label>
-                    <input type="text" id="paisOrigen" name="paisOrigen" placeholder="Ej. España, México">
+                    <label for="tiempoCoccion" class="active">Tiempo de Cocción en minutos:</label>
+                    <input type="text" id="tiempoCoccion" th:field="*{tiempoCoccion}" placeholder="Ej. 10 Minutos">
                 </div>
+            
                 <div class="input-field">
-                    <label for="tiempoCoccion">Tiempo de Cocción en minutos:</label>
-                    <input type="text" id="tiempoCoccion" name="tiempoCoccion" placeholder="Ej. 10 Minutos">
-                </div>
-                <div class="input-field">
-                    <select id="dificultad" name="dificultad" autocomplete="off" autocorrect="off">
-                        <option value="" disabled selected>Seleccione dificultad</option>
-                        <option value="Baja">Baja</option>
-                        <option value="Media">Media</option>
-                        <option value="Alta">Alta</option>
+                    <select id="dificultad" th:field="*{dificultadElaboracion}">
+                        <option value="" disabled>Seleccione dificultad</option>
+                        <option value="Baja" th:selected="*{dificultadElaboracion == 'Baja'}">Baja</option>
+                        <option value="Media" th:selected="*{dificultadElaboracion == 'Media'}">Media</option>
+                        <option value="Alta" th:selected="*{dificultadElaboracion == 'Alta'}">Alta</option>
                     </select>
                     <label for="dificultad">Dificultad:</label>
                 </div>
+            
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>Subir Imagen</span>
                         <input type="file" name="imagen" accept="image/*">
                     </div>
                     <div class="file-path-wrapper">
-                        <input id="imagen" class="file-path validate" type="text" placeholder="Selecciona un archivo de imagen">
+                        <input id="imagen" class="file-path validate" type="text" th:field="*{urlImagen}" 
+                               placeholder="Selecciona un archivo de imagen">
                     </div>
                 </div>
-
-                <button type="submit" id="publicarBtn" class="btn waves-effect waves-light">Publicar</button>
+            
+                <button type="submit" id="editarBtn" class="btn waves-effect waves-light">Guardar Cambios</button>
             </form>
-
             <br>
 
         </section>

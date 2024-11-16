@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Receta</title>
+    <title>Ver Mis Recetas</title>
     <!-- Importar CSS personalizado -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Importar Materialize CSS -->
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Contenido principal -->
-    <div class="container">
+    <div class="">
         <!-- Notificación de éxito -->
         <div th:if="${message}" class="alert alert-success">
             <p th:text="${message}"></p>
@@ -50,67 +50,32 @@
             <p th:text="${error}"></p>
         </div>
 
-        <section id="publicar" class="container">
+        <section id="publicar" class="">
             <div class="titular box fleft fwidth text-center">
-                <h2>Publicar una Receta</h2>
+                <h2>Recetas Publicadas</h2>
             </div>
             <br>
             <br>
             <br>
-            <form id="publicar-recetas" th:action="@{/publicar}" method="post" enctype="multipart/form-data">
-                <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
-                <div class="input-field">
-                    <label for="nombre">Nombre de la receta:</label>
-                    <input type="text"  id="nombre" name="nombre" placeholder="Buscar por nombre">
-                </div>
-                <div class="input-field">
-                    <label for="ingredientes" class="active">Ingredientes</label>
-                    <select id="ingredientes" name="ingredientes" searchable="Selecicona los ingredientes" multiple>
-                        <option th:each="ingrediente : ${ingredientesback}" 
-                        th:text="${ingrediente.nombreIngrediente}" 
-                        th:value="${ingrediente.nombreIngrediente}">
-                        </option>
-                    </select>
-                </div>
-                <div class="input-field">
-                    <label for="instruccionesPreparacion">Instrucciones de Preparacion:</label>
-                    <textarea id="instruccionesPreparacion" name="instruccionesPreparacion" class="materialize-textarea" placeholder="Escribe una breve descripción de la receta..."></textarea>
-                   
-                </div>
-
-                <div class="input-field">
-                    <label for="tipoCocina">Tipo de cocina:</label>
-                    <input type="text" id="tipoCocina" name="tipoCocina" placeholder="Ej. Italiana, Mexicana">
-                </div>
-                <div class="input-field">
-                    <label for="paisOrigen">País de origen:</label>
-                    <input type="text" id="paisOrigen" name="paisOrigen" placeholder="Ej. España, México">
-                </div>
-                <div class="input-field">
-                    <label for="tiempoCoccion">Tiempo de Cocción en minutos:</label>
-                    <input type="text" id="tiempoCoccion" name="tiempoCoccion" placeholder="Ej. 10 Minutos">
-                </div>
-                <div class="input-field">
-                    <select id="dificultad" name="dificultad" autocomplete="off" autocorrect="off">
-                        <option value="" disabled selected>Seleccione dificultad</option>
-                        <option value="Baja">Baja</option>
-                        <option value="Media">Media</option>
-                        <option value="Alta">Alta</option>
-                    </select>
-                    <label for="dificultad">Dificultad:</label>
-                </div>
-                <div class="file-field input-field">
-                    <div class="btn">
-                        <span>Subir Imagen</span>
-                        <input type="file" name="imagen" accept="image/*">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input id="imagen" class="file-path validate" type="text" placeholder="Selecciona un archivo de imagen">
+            <div class="row" id="recetas-mis-container">
+                <div th:each="receta : ${recetasCreadas}" class="col s12 m6 l4">
+                    <div class="card horizontal uniform-card">
+                        <div class="card-image uniform-image">
+                            <img th:src="@{${receta.urlImagen}}" th:alt="${receta.nombre}" />
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h5 th:text="${receta.nombre}">Nombre de la receta</h5>
+                                <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                                <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                                <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                            </div>
+                            <div class="card-action">
+                                <a th:href="@{/editarmireceta/{id}(id=${receta.id})}" class="btn">Ver Receta</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <button type="submit" id="publicarBtn" class="btn waves-effect waves-light">Publicar</button>
-            </form>
 
             <br>
 

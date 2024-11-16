@@ -141,3 +141,22 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+/*Configuración CCS card*/
+.uniform-card {
+    height: 300px; /* Ajusta según el diseño */
+}
+
+/* Clase para uniformizar las imágenes */
+.uniform-image img {
+    height: 100%; /* Hace que la imagen ocupe todo el contenedor */
+    width: auto; /* Mantiene las proporciones */
+    max-height: 300px; /* Limita el tamaño máximo */
+    object-fit: cover; /* Recorta la imagen si es necesario para llenar el espacio */
+}
+
+/* Asegura que los textos y botones no desborden */
+.card-content, .card-action {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

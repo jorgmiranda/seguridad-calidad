@@ -10,6 +10,7 @@ public class Receta {
     private String paisDeOrigen;
     private String dificultadElaboracion;
     private String instruccionesPreparacion;
+    private String urlVideo;
     private Integer tiempoCoccion;
     private String urlImagen;
     private Date fechaCreacion;
@@ -173,17 +174,29 @@ public class Receta {
 
 
 
-    public static class Ingrediente {
-        private String nombreIngrediente;
+    public String getUrlVideo() {
+        return urlVideo;
+    }
 
-        public String getNombreIngrediente() {
-            return nombreIngrediente;
-        }
 
-        public void setNombreIngrediente(String nombreIngrediente) {
-            this.nombreIngrediente = nombreIngrediente;
-        }
+
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
+    }
+
+
+
+    // public static class Ingrediente {
+    //     private String nombreIngrediente;
+
+    //     public String getNombreIngrediente() {
+    //         return nombreIngrediente;
+    //     }
+
+    //     public void setNombreIngrediente(String nombreIngrediente) {
+    //         this.nombreIngrediente = nombreIngrediente;
+    //     }
 
         
-    }
+    // }
 }

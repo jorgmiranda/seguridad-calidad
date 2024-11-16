@@ -10,6 +10,7 @@ public class CrearReceta {
     private String instruccionesPreparacion;
     private Integer tiempoCoccion;
     private String urlImagen;
+    private String urlVideo;
     private Integer popularidad;
     private List<String> ingredientes;
     public String getNombre() {
@@ -65,6 +66,12 @@ public class CrearReceta {
     }
     public void setIngredientes(List<String> ingredientes) {
         this.ingredientes = ingredientes;
+    }
+    public String getUrlVideo() {
+        return urlVideo;
+    }
+    public void setUrlVideo(String urlVideo) {
+        this.urlVideo = urlVideo;
     }
 
     
