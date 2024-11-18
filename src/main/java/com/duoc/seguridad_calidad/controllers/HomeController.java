@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.duoc.seguridad_calidad.security.TokenStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,12 @@ import com.duoc.seguridad_calidad.dto.RecetaParcial;
 @Controller
 public class HomeController {
 
+
+    private final TokenStore tokenStore;
+
+    public HomeController(TokenStore tokenStore) {
+        this.tokenStore = tokenStore;
+    }
 
     @GetMapping("/home")
     public String home(@RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name, Model model){
@@ -40,6 +47,7 @@ public class HomeController {
         // Agregar ambas listas al modelo
         model.addAttribute("recetasPorPopularidad", recetasPorPopularidad);
         model.addAttribute("recetasPorFecha", recetasPorFecha);
+        model.addAttribute("token", tokenStore.getToken());
 
         model.addAttribute("name", name);
         return "home";

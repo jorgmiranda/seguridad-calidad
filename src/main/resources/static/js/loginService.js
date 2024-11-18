@@ -11,18 +11,18 @@ function ingresar() {
         window.alert("Debe completar ambos campos!")
     } else {
 
-        fetch("/ingresar?email="+email+"&password="+password, {
-            method: 'POST' ,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            body:{}
-
-        }, ).then(response => response.text())
-            .then(data => {
-                console.log("Resp del server: " + data);
-            })
-            .catch(error => console.error('Error: ' + error));
+        // fetch("/ingresar?email="+email+"&password="+password, {
+        //     method: 'POST' ,
+        //     headers: {
+        //         'content-Type': 'application/json'
+        //     },
+        //     body:{}
+        //
+        // }, ).then(response => response.text())
+        //     .then(data => {
+        //         // console.log("Resp del server: " + data);
+        //     })
+        //     .catch(error => console.error('Error: ' + error));
     }
 
 }

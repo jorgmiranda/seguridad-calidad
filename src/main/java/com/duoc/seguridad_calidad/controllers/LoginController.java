@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
@@ -36,7 +38,7 @@ public class LoginController {
     }
 
     @PostMapping("/ingresar")
-    public String ingresar(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password, Model model) {
+    public String ingresar(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password, Model model, RedirectAttributes redirectAttributes) {
 
         String url = "http://localhost:8081/api/login";
 
@@ -67,8 +69,11 @@ public class LoginController {
         }
 
         model.addAttribute("token", tokenStore.getToken());
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.getEmail());
 
-        return "home";
+        redirectAttributes.addAttribute("token", tokenStore.getToken());
+        redirectAttributes.addAttribute("user", user.toString());
+
+        return "redirect:/home";
     }
 }
