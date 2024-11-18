@@ -13,6 +13,7 @@ public class CrearReceta {
     private String urlVideo;
     private Integer popularidad;
     private List<String> ingredientes;
+    private Long usuarioId;
     public String getNombre() {
         return nombre;
     }
@@ -72,6 +73,12 @@ public class CrearReceta {
     }
     public void setUrlVideo(String urlVideo) {
         this.urlVideo = urlVideo;
+    }
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     

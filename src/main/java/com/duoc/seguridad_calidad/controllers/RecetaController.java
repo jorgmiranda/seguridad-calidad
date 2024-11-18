@@ -28,19 +28,28 @@ import org.springframework.web.multipart.MultipartFile;
 import com.duoc.seguridad_calidad.dto.CrearReceta;
 import com.duoc.seguridad_calidad.dto.Ingrediente;
 import com.duoc.seguridad_calidad.dto.Receta;
+import com.duoc.seguridad_calidad.security.TokenStore;
 
 @Controller
 public class RecetaController {
+    private final TokenStore tokenStore;
+
+    public RecetaController(TokenStore tokenStore){
+        this.tokenStore = tokenStore;
+    }
 
     @GetMapping("/crearreceta")
     public String home(
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             Model model) {
 
-        List<Ingrediente> ingredientes = obtenIngredientes();
+        List<Ingrediente> ingredientes = obtenIngredientes(tokenStore.getToken());
 
         model.addAttribute("ingredientesback", ingredientes);
         model.addAttribute("name", name);
+
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
 
         return "crearreceta";
     }
@@ -66,6 +75,7 @@ public class RecetaController {
         receta.setTiempoCoccion(tiempoCoccion);
         receta.setIngredientes(ingredientes);
         receta.setPopularidad(1);
+        receta.setUsuarioId(tokenStore.getUserModel().getId());
 
         // Verificar que la imagen no esté vacía
         if (!imagen.isEmpty()) {
@@ -108,7 +118,7 @@ public class RecetaController {
         System.out.println(receta.getTiempoCoccion());
         System.out.println(receta.getDificultadElaboracion());
 
-        ResponseEntity<?> response = publicarReceta(receta);
+        ResponseEntity<?> response = publicarReceta(receta, tokenStore.getToken());
 
         // Verificar si la solicitud fue exitosa
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -117,8 +127,11 @@ public class RecetaController {
             model.addAttribute("error", "Hubo un problema al publicar la receta");
         }
 
-        List<Ingrediente> ingredientesselect = obtenIngredientes();
+        List<Ingrediente> ingredientesselect = obtenIngredientes(tokenStore.getToken());
         model.addAttribute("ingredientesback", ingredientesselect);
+        
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
 
         return "crearreceta";
     }
@@ -128,10 +141,13 @@ public class RecetaController {
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             @PathVariable Long id, Model model) {
 
-        List<Receta> recetas = obtenerRecetasUsuario(id);
+        List<Receta> recetas = obtenerRecetasUsuario(id, tokenStore.getToken());
 
         model.addAttribute("recetasCreadas", recetas);
         model.addAttribute("name", name);
+
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
 
         return "recetas/vermisrecetas";
     }
@@ -141,8 +157,8 @@ public class RecetaController {
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             @PathVariable Long id, Model model) {
 
-        Receta receta = obtenerRecetasByID(id);
-        List<Ingrediente> ingredientes = obtenIngredientes();
+        Receta receta = obtenerRecetasByID(id, tokenStore.getToken());
+        List<Ingrediente> ingredientes = obtenIngredientes(tokenStore.getToken());
 
         List<String> ingredientesSeleccionados = receta.getRecetaIngredientes().stream()
                 .map(Ingrediente::getNombreIngrediente) // Extrae los nombres
@@ -153,6 +169,9 @@ public class RecetaController {
         model.addAttribute("receta", receta);
         model.addAttribute("name", name);
 
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
+
         return "recetas/editarmireceta";
     }
 
@@ -161,10 +180,13 @@ public class RecetaController {
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             @PathVariable Long id,
             Model model) {
-        Receta receta = obtenerRecetasByID(id);
+                
+        Receta receta = obtenerRecetasByID(id, tokenStore.getToken());
 
         model.addAttribute("receta", receta);
         model.addAttribute("name", name);
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
 
         return "recetas/verreceta";
 
@@ -224,7 +246,7 @@ public class RecetaController {
         System.out.println(recetaEdit.getTiempoCoccion());
         System.out.println(recetaEdit.getDificultadElaboracion());
 
-        ResponseEntity<?> response = editarReceta(id, recetaEdit);
+        ResponseEntity<?> response = editarReceta(id, recetaEdit, tokenStore.getToken());
 
         // Verificar si la solicitud fue exitosa
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -234,20 +256,23 @@ public class RecetaController {
         }
 
         // Obtener recetas del usuario (Reemplazar ocn id de usuario)
-        List<Receta> recetas = obtenerRecetasUsuario((long) 1);
+        List<Receta> recetas = obtenerRecetasUsuario(tokenStore.getUserModel().getId(), tokenStore.getToken());
         model.addAttribute("id", id);
         model.addAttribute("recetasCreadas", recetas);
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
 
         return "recetas/vermisrecetas";
     }
 
     // Consumo de serivicios
     // Metodo que consume el servicio de creación de receta
-    private ResponseEntity<?> publicarReceta(CrearReceta crearReceta) {
+    private ResponseEntity<?> publicarReceta(CrearReceta crearReceta, String token) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", token);
 
         HttpEntity<CrearReceta> request = new HttpEntity<>(crearReceta, headers);
 
@@ -258,11 +283,13 @@ public class RecetaController {
     }
 
     // Metodo que consume el servicio de edición de receta
-    private ResponseEntity<?> editarReceta(Long id, CrearReceta crearReceta) {
+    private ResponseEntity<?> editarReceta(Long id, CrearReceta crearReceta, String token) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", token);
+
 
         HttpEntity<CrearReceta> request = new HttpEntity<>(crearReceta, headers);
 
@@ -272,41 +299,71 @@ public class RecetaController {
         return response;
     }
 
-    private List<Ingrediente> obtenIngredientes() {
+    private List<Ingrediente> obtenIngredientes(String token) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8081/ingredientes";
-        Ingrediente[] ingredientes = restTemplate.getForObject(url, Ingrediente[].class);
+
+         // Crear los encabezados y agregar el token
+         HttpHeaders headers = new HttpHeaders();
+         headers.set("Authorization", token);
+ 
+         // Crear el HttpEntity con los encabezados
+         HttpEntity<String> entity = new HttpEntity<>(headers);
+ 
+         // Hacer la solicitud GET con los encabezados
+         ResponseEntity<Ingrediente[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Ingrediente[].class);
+
+
+        Ingrediente[] ingredientes = response.getBody();;
 
         return Arrays.asList(ingredientes);
     }
 
-    private List<Receta> obtenerRecetasUsuario(Long id) {
+    private List<Receta> obtenerRecetasUsuario(Long id, String token) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8081/recetas/usuario/" + id;
 
-        Receta[] recetas = restTemplate.getForObject(url, Receta[].class);
+         // Crear los encabezados y agregar el token
+         HttpHeaders headers = new HttpHeaders();
+         headers.set("Authorization", token);
+ 
+         // Crear el HttpEntity con los encabezados
+         HttpEntity<String> entity = new HttpEntity<>(headers);
+ 
+         // Hacer la solicitud GET con los encabezados
+         ResponseEntity<Receta[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, Receta[].class);
+ 
+         // Obtener el resultado de la respuesta
+         Receta[] recetas = response.getBody();
+ 
 
         return Arrays.asList(recetas);
     }
 
-    private Receta obtenerRecetasByID(Long id) {
+    private Receta obtenerRecetasByID(Long id, String token) {
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:8081/recetas/" + id;
 
-        // Realizar la solicitud GET y mapear la respuesta a la clase Receta
+        // Crear los encabezados y agregar el token de autorización
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+
+        // Crear el HttpEntity con los encabezados (sin cuerpo, ya que es una solicitud GET)
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        // Realizar la solicitud GET con los encabezados
         try {
-            ResponseEntity<Receta> response = restTemplate.getForEntity(url, Receta.class);
+            ResponseEntity<Receta> response = restTemplate.exchange(url, HttpMethod.GET, entity, Receta.class);
+
             if (response.getStatusCode() == HttpStatus.OK) {
                 return response.getBody();
             } else {
                 throw new RuntimeException("Error al obtener la receta, código de estado: " + response.getStatusCode());
             }
         } catch (HttpClientErrorException.NotFound e) {
-
             System.err.println("Receta no encontrada para ID: " + id);
             return null;
         } catch (Exception e) {
-
             System.err.println("Error al realizar la solicitud: " + e.getMessage());
             return null;
         }

@@ -44,19 +44,17 @@ public class WebSecurityConfig {
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()).disable())
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/._darcs", "/.bzr", "/.hg", "/BitKeeper").denyAll()
-                        .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
                         //Quitar 
-                        .requestMatchers(HttpMethod.GET, "/crearreceta", "/vermisrecetas/**", "/editarmireceta/**","/verreceta/**", "/detallereceta").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/publicar", "/editar/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/crearreceta", "/vermisrecetas/**", "/editarmireceta/**","/verreceta/**", "/detallereceta").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/publicar", "/editar/**").hasRole("USER")
                         //Cierre
                         .requestMatchers("/", "/home", "/login", "/testing", "/ingresar").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/testing").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/ingresar").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
                         .permitAll())
                 .logout((logout) -> logout.permitAll())
                 // .headers(headers -> headers
@@ -78,22 +76,22 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    @Description("In memory Userdetails service registered since DB doesn't have user table ")
-    public UserDetailsService users() {
-        // The builder will ensure the passwords are encoded before saving in memory
-        UserDetails user = User.builder()
-                .username("pe.falfan@duocuc.cl")
-                .password(passwordEncoder().encode("123456"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("radahn@duocuc.cl")
-                .password(passwordEncoder().encode("123456"))
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//     @Bean
+//     @Description("In memory Userdetails service registered since DB doesn't have user table ")
+//     public UserDetailsService users() {
+//         // The builder will ensure the passwords are encoded before saving in memory
+//         UserDetails user = User.builder()
+//                 .username("pe.falfan@duocuc.cl")
+//                 .password(passwordEncoder().encode("123456"))
+//                 .roles("USER")
+//                 .build();
+//         UserDetails admin = User.builder()
+//                 .username("radahn@duocuc.cl")
+//                 .password(passwordEncoder().encode("123456"))
+//                 .roles("USER", "ADMIN")
+//                 .build();
+//         return new InMemoryUserDetailsManager(user, admin);
+//     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

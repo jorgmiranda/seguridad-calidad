@@ -20,9 +20,16 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/login}">Login</a></li>
-                <li><a th:href="@{/detallereceta}" >Detalle Recetas</a></li>
-                <li><a th:href="@{/crearreceta}" >Publicar Recetas</a></li>
-                <li><a th:href="@{/vermisrecetas/1}" >Ver Mis Recetas</a></li>
+                <li th:if="${token != null}">
+                    <a th:href="@{/detallereceta}" >Detalle Recetas</a>
+                </li>
+                <li th:if="${token != null}">
+                    <a th:href="@{/crearreceta}" >Publicar Recetas</a>
+                </li>
+                <li th:if="${token != null}">
+                    <a th:href="@{/vermisrecetas/{id}(id=${user.id})}" >Ver Mis Recetas</a>
+                </li>
+
             </ul>
         </div>
     </nav>
@@ -38,7 +45,6 @@
 
     </div>
 
-    <p><strong>TOKEN:</strong><span th:text="${token}"></span></p>
 
 
     <!-- Contenido principal -->
