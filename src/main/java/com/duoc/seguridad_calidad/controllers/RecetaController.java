@@ -100,7 +100,6 @@ public class RecetaController {
                                                                                         // recursos
 
             } catch (IOException e) {
-                e.printStackTrace();
                 model.addAttribute("error", "Error al subir la imagen: " + e.getMessage());
                 return "crearreceta";
             }
@@ -231,7 +230,6 @@ public class RecetaController {
                                                                                         // recursos
 
             } catch (IOException e) {
-                e.printStackTrace();
                 model.addAttribute("error", "Error al subir la imagen: " + e.getMessage());
                 return "recetas/vermisrecetas";
             }
