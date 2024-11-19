@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Archivos de control de versiones ###
+.darcs/
+.bzr/
+.hg/
+BitKeeper/

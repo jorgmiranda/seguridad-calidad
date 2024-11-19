@@ -72,6 +72,9 @@
     position: relative; /* Cambia a relative para que se alineen correctamente */
     display: block; /* Asegura que el elemento sea un bloque, permitiendo cambios */
 }
+#carrusel{
+    padding: 0;
+}
 
 /* Estilo para el elemento visible */
 .carousel .carousel-item.active {
@@ -117,4 +120,43 @@
 
 .footer-copyright {
     background-color: #1f1f1f !important; /* Color de fondo para la sección de derechos de autor */
+}
+
+/*Alertas*/
+.alert {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/*Configuración CCS card*/
+.uniform-card {
+    height: 300px; /* Ajusta según el diseño */
+}
+
+/* Clase para uniformizar las imágenes */
+.uniform-image img {
+    height: 100%; /* Hace que la imagen ocupe todo el contenedor */
+    width: auto; /* Mantiene las proporciones */
+    max-height: 300px; /* Limita el tamaño máximo */
+    object-fit: cover; /* Recorta la imagen si es necesario para llenar el espacio */
+}
+
+/* Asegura que los textos y botones no desborden */
+.card-content, .card-action {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

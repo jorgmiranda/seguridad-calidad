@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de recetas</title>
+    <title>Ver Mis Recetas</title>
     <!-- Importar CSS personalizado -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Importar Materialize CSS -->
     <link th:href="@{/css/materialize.min.css}" rel="stylesheet">
+    <link th:href="@{/css/materializecustom.css}" rel="stylesheet">
     <!-- Importar JavaScript de Materialize -->
     <script th:src="@{/js/materialize.min.js}"></script>
 </head>
@@ -35,7 +36,7 @@
     </nav>
 
     <div id="wrapper" class="container-fluid">
-        <section id="carrusel" class="container-fluid" style="padding: 0;">
+        <section id="carrusel" class="container-fluid">
             <div class="carousel">
                 <a class="carousel-item" href="#uno"><img th:src="@{/images/carrusel/oferta-1.png}" alt="Oferta 1"></a>
                 <a class="carousel-item" href="#dos"><img th:src="@{/images/carrusel/oferta-2.jpg}" alt="Oferta 2"></a>
@@ -46,37 +47,47 @@
     </div>
 
     <!-- Contenido principal -->
-    <div class="container">
+    <div class="">
+        <!-- Notificación de éxito -->
+        <div th:if="${message}" class="alert alert-success">
+            <p th:text="${message}"></p>
+        </div>
 
+        <!-- Notificación de error -->
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
+        </div>
 
-        <section id="recetas-detalle" class="container">
+        <section id="publicar" class="">
             <div class="titular box fleft fwidth text-center">
-                <h2>Recetas con detalles</h2>
+                <h2>Recetas Publicadas</h2>
             </div>
-            <div class="row" id="recetas-detalle-container">
-                <div th:each="receta : ${recetas}" class="col s4">
-                    <div class="receta">
-                        <h3 th:text="${receta.nombre}">Nombre de la receta</h3>
-                        <img th:src="${receta.urlImagen}" th:alt="${receta.nombre}" class="receta-imagen" />
-                        <p><strong>Pais de Origen:</strong> <span th:text="${receta.paisDeOrigen}">Pais de Origen</span></p>
-                        <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
-                        <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
-                        <p><strong>Instrucciones:</strong> <span th:text="${receta.instruccionesPreparacion}">Instrucciones</span></p>
-                        <p><strong>Ingredientes:</strong></p>
-                        <ul>
-                            <li th:each="ingrediente : ${receta.recetaIngredientes}" th:text="${ingrediente.nombreIngrediente}"></li>
-                        </ul>
-                        <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
-                        <p><strong>Fecha de Creación:</strong> <span th:text="${#dates.format(receta.fechaCreacion, 'dd/MM/yyyy')}">Fecha</span></p> 
-                        <p><strong>Popularidad:</strong> <span th:text="${receta.popularidad}">0</span> / 5</p>
-                        <a th:href="@{/verreceta/{id}(id=${receta.id})}" class="btn">Ver Receta</a>
+            <br>
+            <br>
+            <br>
+            <div class="row" id="recetas-mis-container">
+                <div th:each="receta : ${recetasCreadas}" class="col s12 m6 l4">
+                    <div class="card horizontal uniform-card">
+                        <div class="card-image uniform-image">
+                            <img th:src="@{${receta.urlImagen}}" th:alt="${receta.nombre}" />
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h5 th:text="${receta.nombre}">Nombre de la receta</h5>
+                                <p><strong>Tipo de Cocina:</strong> <span th:text="${receta.tipoDeCocina}">Tipo de cocina</span></p>
+                                <p><strong>Dificultad:</strong> <span th:text="${receta.dificultadElaboracion}">Dificultad</span></p>
+                                <p><strong>Tiempo de Cocción:</strong> <span th:text="${receta.tiempoCoccion}">Tiempo de cocción</span></p>
+                            </div>
+                            <div class="card-action">
+                                <a th:href="@{/editarmireceta/{id}(id=${receta.id})}" class="btn">Ver Receta</a>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                
-            </div>
+            <br>
 
         </section>
-
         
     </div>
 
@@ -107,19 +118,10 @@
     </footer>
    
 
-    
-    <script th:src="@{/js/detalle.js}"></script>
-    <script th:src="@{/js/carrusel.js}"></script>
 
-    <script>
-       
-        document.addEventListener('DOMContentLoaded', function() {
-            const elems = document.querySelectorAll('select');
-            const instances = M.FormSelect.init(elems);
-        });
-    
-        
-    </script>
+    <script th:src="@{/js/carrusel.js}"></script>
+    <script th:src="@{/js/materializecustom.js}"></script>
+  
 
 </body>
 </html>
