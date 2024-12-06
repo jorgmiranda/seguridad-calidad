@@ -6,14 +6,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.duoc.seguridad_calidad.security.TokenStore;
+import com.duoc.seguridad_calidad.services.RecetaService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-
-import com.duoc.seguridad_calidad.dto.Filtro;
 import com.duoc.seguridad_calidad.dto.Receta;
 import com.duoc.seguridad_calidad.dto.RecetaParcial;
 
@@ -21,9 +20,11 @@ import com.duoc.seguridad_calidad.dto.RecetaParcial;
 public class HomeController {
 
     private final TokenStore tokenStore;
+    private final RecetaService recetaService;
 
-    public HomeController(TokenStore tokenStore) {
+    public HomeController(TokenStore tokenStore, RecetaService recetaService) {
         this.tokenStore = tokenStore;
+        this.recetaService = recetaService;
     }
 
     @GetMapping("/home")
@@ -31,7 +32,7 @@ public class HomeController {
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             Model model) {
         // Se obtienen las recetas
-        List<RecetaParcial> recetas = obtenerRecetas();
+        List<RecetaParcial> recetas = recetaService.obtenerRecetas();
 
         // Ordenar por popularidad (mayor a menor)
         List<RecetaParcial> recetasPorPopularidad = recetas.stream()
@@ -66,7 +67,7 @@ public class HomeController {
             @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             Model model) {
         // Se obtienen las recetas
-        List<RecetaParcial> recetas = obtenerRecetas();
+        List<RecetaParcial> recetas = recetaService.obtenerRecetas();
 
         // Ordenar por popularidad (mayor a menor)
         List<RecetaParcial> recetasPorPopularidad = recetas.stream()
@@ -118,7 +119,7 @@ public class HomeController {
 
         System.out.println(nombre);
         // Se obtienen las recetas
-        List<RecetaParcial> recetas = obtenerRecetas();
+        List<RecetaParcial> recetas = recetaService.obtenerRecetas();
 
         // Ordenar por popularidad (mayor a menor)
         List<RecetaParcial> recetasPorPopularidad = recetas.stream()
@@ -133,7 +134,7 @@ public class HomeController {
                 .collect(Collectors.toList());
 
         // Filtrar recetas
-        List<Receta> recetasfiltradas = filrarRecetas(nombre, paisOrigen, dificultad, tipoCocina, ingredientes);
+        List<Receta> recetasfiltradas = recetaService.filrarRecetas(nombre, paisOrigen, dificultad, tipoCocina, ingredientes);
 
         // Agregar ambas listas al modelo
         model.addAttribute("recetasPorFiltro", recetasfiltradas);
@@ -156,24 +157,4 @@ public class HomeController {
         return input != null && input.length() < 255 && input.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*$");
     }
 
-    private List<RecetaParcial> obtenerRecetas() {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8081/recetas/parcial";
-
-        RecetaParcial[] recetas = restTemplate.getForObject(url, RecetaParcial[].class);
-
-        return Arrays.asList(recetas);
-    }
-
-    private List<Receta> filrarRecetas(String nombre, String pais, String dificultad, String tipo, String ingrediente) {
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8081/recetas/filtrar";
-
-        // Valores
-        Filtro filtro = new Filtro(nombre, pais, dificultad, tipo, ingrediente);
-
-        Receta[] recetas = restTemplate.postForObject(url, filtro, Receta[].class);
-
-        return Arrays.asList(recetas);
-    }
 }

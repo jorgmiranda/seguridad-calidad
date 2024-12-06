@@ -24,15 +24,20 @@ public class Receta {
 
     
 
+    
+
+    
+
     public Receta(Long id, String nombre, String tipoDeCocina, String paisDeOrigen, String dificultadElaboracion,
-            String instruccionesPreparacion, Integer tiempoCoccion, String urlImagen, Date fechaCreacion,
-            Integer popularidad, List<Ingrediente> recetaIngredientes) {
+            String instruccionesPreparacion, String urlVideo, Integer tiempoCoccion, String urlImagen,
+            Date fechaCreacion, Integer popularidad, List<Ingrediente> recetaIngredientes) {
         this.id = id;
         this.nombre = nombre;
         this.tipoDeCocina = tipoDeCocina;
         this.paisDeOrigen = paisDeOrigen;
         this.dificultadElaboracion = dificultadElaboracion;
         this.instruccionesPreparacion = instruccionesPreparacion;
+        this.urlVideo = urlVideo;
         this.tiempoCoccion = tiempoCoccion;
         this.urlImagen = urlImagen;
         this.fechaCreacion = fechaCreacion;
@@ -40,7 +45,11 @@ public class Receta {
         this.recetaIngredientes = recetaIngredientes;
     }
 
-    
+
+
+
+
+
 
     public Long getId() {
         return id;

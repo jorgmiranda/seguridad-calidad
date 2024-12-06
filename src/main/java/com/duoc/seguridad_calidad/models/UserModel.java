@@ -10,6 +10,18 @@ public class UserModel {
 
     private String nombre;
 
+    
+
+    public UserModel(long id, String correo, String contrasena, String nombre) {
+        this.id = id;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+    }
+
+    public UserModel() {
+    }
+
     public String getNombre() {
         return nombre;
     }

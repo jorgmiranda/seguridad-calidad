@@ -1,4 +1,4 @@
-package com.duoc.seguridad_calidad;
+package com.duoc.seguridad_calidad.config;
 
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
 import org.apache.tomcat.util.http.SameSiteCookies;
