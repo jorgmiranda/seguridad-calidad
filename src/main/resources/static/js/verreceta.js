@@ -14,3 +14,12 @@ function copiarEnlace(elemento) {
     // Mostrar un mensaje de confirmación
     alert('¡Enlace copiado al portapapeles!');
 }
+
+function showCommentModal(recetaId) {
+    console.log("test" + recetaId);
+    document.getElementById(recetaId).style.display = 'block';
+}
+
+function hideCommentModal(recetaId) {
+    document.getElementById(recetaId).style.display = 'none';
+}

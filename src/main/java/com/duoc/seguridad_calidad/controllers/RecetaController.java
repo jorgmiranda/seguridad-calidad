@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.duoc.seguridad_calidad.dto.ComentarioReceta;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +48,36 @@ public class RecetaController {
         model.addAttribute("user", tokenStore.getUserModel());
 
         return "crearreceta";
+    }
+
+    @PostMapping("/receta/comentar/{id}")
+    public String comentar(
+            @RequestParam("comentario") String comentario,
+            @RequestParam("calificacion") int calificacion,
+            @PathVariable Long id, Model model
+            ) {
+
+        ComentarioReceta comment = new ComentarioReceta();
+
+        comment.setComentario(comentario);
+        comment.setIdReceta(id);
+        comment.setIdUsuario(tokenStore.getUserModel().getId());
+        comment.setCalificacion(calificacion);
+
+        List<ComentarioReceta> comentarios = recetaService.obtenerComentarios(id);
+
+        model.addAttribute("comentarios", comentarios);
+        Receta receta = recetaService.obtenerRecetasByID(id, tokenStore.getToken());
+
+
+
+        model.addAttribute("receta", receta);
+        model.addAttribute("token", tokenStore.getToken());
+        model.addAttribute("user", tokenStore.getUserModel());
+
+        recetaService.comentarRecetas(comment, tokenStore.getToken());
+
+        return "recetas/verreceta";
     }
 
     @PostMapping("/publicar")
@@ -171,14 +202,16 @@ public class RecetaController {
 
     @GetMapping("/verreceta/{id}")
     public String verReceta(
-            @RequestParam(name = "name", required = false, defaultValue = "Seguridad y calidad en el desarrollo") String name,
             @PathVariable Long id,
             Model model) {
+
+        List<ComentarioReceta> comentarios = recetaService.obtenerComentarios(id);
+
+        model.addAttribute("comentarios", comentarios);
                 
         Receta receta = recetaService.obtenerRecetasByID(id, tokenStore.getToken());
 
         model.addAttribute("receta", receta);
-        model.addAttribute("name", name);
         model.addAttribute("token", tokenStore.getToken());
         model.addAttribute("user", tokenStore.getUserModel());
 

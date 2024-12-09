@@ -3,6 +3,8 @@ package com.duoc.seguridad_calidad.services;
 import java.util.Arrays;
 import java.util.List;
 
+import com.duoc.seguridad_calidad.dto.*;
+import com.duoc.seguridad_calidad.models.ResponseModel;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,14 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
-import com.duoc.seguridad_calidad.dto.CrearReceta;
-import com.duoc.seguridad_calidad.dto.Filtro;
-import com.duoc.seguridad_calidad.dto.Ingrediente;
-import com.duoc.seguridad_calidad.dto.Receta;
-import com.duoc.seguridad_calidad.dto.RecetaParcial;
 
 @Service
 public class RecetaService {
@@ -35,6 +33,58 @@ public class RecetaService {
         RecetaParcial[] recetas = restTemplate.getForObject(url, RecetaParcial[].class);
 
         return Arrays.asList(recetas);
+    }
+
+    public void comentarRecetas(ComentarioReceta comentarioReceta,String token) {
+//    public void comentarRecetas(int idReceta, Long id_usuario, String comentario, boolean esPublico, int calificacion,String token) {
+        String url = URL+"recetas/comentar";
+
+        System.out.println(token);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", token);
+
+        ComentarioReceta coment = new ComentarioReceta();
+        coment.setComentario(comentarioReceta.getComentario());
+        coment.setIdReceta(comentarioReceta.getIdReceta());
+        coment.setIdUsuario(comentarioReceta.getIdUsuario());
+        coment.setEsPublico(false);
+        coment.setCalificacion(comentarioReceta.getCalificacion());
+
+        HttpEntity<ComentarioReceta> request = new HttpEntity<>(coment, headers);
+
+        ResponseEntity<?> response = restTemplate.exchange(
+                url, HttpMethod.POST, request, Object.class);
+
+
+
+        // Crear los encabezados y agregar el token
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", token);
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+////
+//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<String, Object>();
+////
+//        body.add("idReceta", comentarioReceta.getIdReceta());
+//        body.add("id_usuario", comentarioReceta.getIdReceta());
+//        body.add("comentario", comentarioReceta.getComentario());
+////
+//        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<MultiValueMap<String, Object>>(body, headers);
+//
+////
+//        restTemplate.postForObject(url,entity , ResponseModel.class);
+
+//        restTemplate.exchange(url, HttpMethod.POST, entity);
+    }
+
+    public List<ComentarioReceta> obtenerComentarios(Long idReceta) {
+        String url = URL+"recetas/obtener-comentarios?idReceta="+idReceta;
+//        String url = URL+"recetas/obtener-comentarios?idReceta=0";
+
+        ComentarioReceta[] comentarios = restTemplate.getForObject(url, ComentarioReceta[].class);
+
+        return Arrays.asList(comentarios);
     }
 
     public List<Receta> obtenerRecetasFull(String token){
