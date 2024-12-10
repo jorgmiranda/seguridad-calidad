@@ -17,17 +17,10 @@ public class Receta {
     private Integer popularidad;
     private List<Ingrediente> recetaIngredientes;
 
-    
-
     public Receta() {
     }
 
-    
-
-    
-
-    
-
+ 
     public Receta(Long id, String nombre, String tipoDeCocina, String paisDeOrigen, String dificultadElaboracion,
             String instruccionesPreparacion, String urlVideo, Integer tiempoCoccion, String urlImagen,
             Date fechaCreacion, Integer popularidad, List<Ingrediente> recetaIngredientes) {
@@ -44,11 +37,6 @@ public class Receta {
         this.popularidad = popularidad;
         this.recetaIngredientes = recetaIngredientes;
     }
-
-
-
-
-
 
 
     public Long getId() {
@@ -194,18 +182,4 @@ public class Receta {
     }
 
 
-
-    // public static class Ingrediente {
-    //     private String nombreIngrediente;
-
-    //     public String getNombreIngrediente() {
-    //         return nombreIngrediente;
-    //     }
-
-    //     public void setNombreIngrediente(String nombreIngrediente) {
-    //         this.nombreIngrediente = nombreIngrediente;
-    //     }
-
-        
-    // }
 }

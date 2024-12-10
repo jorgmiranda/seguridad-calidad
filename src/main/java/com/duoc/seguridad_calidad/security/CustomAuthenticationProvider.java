@@ -25,10 +25,13 @@ import com.google.gson.Gson;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private TokenStore tokenStore;
+    private RestTemplate restTemplate;
 
-    public CustomAuthenticationProvider(TokenStore tokenStore) {
+
+    public CustomAuthenticationProvider(TokenStore tokenStore, RestTemplate restTemplate) {
         super();
         this.tokenStore = tokenStore;
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         System.out.println("Request Body: " + requestBody);
 
-        final var restTemplate = new RestTemplate();
+        // final var restTemplate = new RestTemplate();
         final var responseEntity = restTemplate.postForEntity("http://localhost:8081/api/login?correo="+name+"&password="+password, requestBody, String.class);
 
         ResponseModel responseModel = new Gson().fromJson(responseEntity.getBody(), ResponseModel.class);

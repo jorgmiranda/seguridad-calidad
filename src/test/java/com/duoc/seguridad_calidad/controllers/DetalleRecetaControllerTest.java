@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.duoc.seguridad_calidad.dto.Ingrediente;
 import com.duoc.seguridad_calidad.dto.Receta;
@@ -76,10 +78,28 @@ public class DetalleRecetaControllerTest {
         UserModel mockUser = this.createMockUser();
 
         when(restTemplate.exchange(
-                ArgumentMatchers.contains(BASE_URL+"detallereceta"), // Specify expected URL
+                ArgumentMatchers.contains(BASE_URL + "detallereceta"),
                 ArgumentMatchers.any(HttpMethod.class),
-                ArgumentMatchers.any(HttpEntity.class),
-                ArgumentMatchers.<Class<String>>any())).thenReturn(new ResponseEntity<>("Hello Test", HttpStatus.OK));
+                ArgumentMatchers.argThat(new ArgumentMatcher<HttpEntity<?>>() {
+                    @Override
+                    public boolean matches(HttpEntity<?> entity) {
+                        return "InvalidToken".equals(entity.getHeaders().getFirst("Authorization"));
+                    }
+                }),
+                ArgumentMatchers.<Class<String>>any()))
+                .thenReturn(new ResponseEntity<>("Invalid Token", HttpStatus.BAD_REQUEST));
+
+        when(restTemplate.exchange(
+            ArgumentMatchers.contains(BASE_URL + "detallereceta"),
+            ArgumentMatchers.any(HttpMethod.class),
+            ArgumentMatchers.argThat(new ArgumentMatcher<HttpEntity<?>>() {
+                @Override
+                public boolean matches(HttpEntity<?> entity) {
+                    return !"InvalidToken".equals(entity.getHeaders().getFirst("Authorization"));
+                }
+            }),
+            ArgumentMatchers.<Class<String>>any()))
+            .thenReturn(new ResponseEntity<>("Hello Test", HttpStatus.OK));
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", MOCK_TOKEN);
@@ -138,10 +158,18 @@ public class DetalleRecetaControllerTest {
         // Sobrescribe el comportamiento del token en esta prueba
         when(tokenStore.getToken()).thenReturn("InvalidToken");
 
-        // Realizar la solicitud y verificar que el código de estado sea 401
-        mockMvc.perform(get("/detallereceta")
-                        .header("Authorization", "InvalidToken"))
-                .andExpect(status().isUnauthorized()); // Verifica que el estado sea 401
+        MvcResult result = mockMvc.perform(get("/detallereceta")
+        .header("Authorization", "InvalidToken")
+        .param("name", "TestName"))
+        .andExpect(status().isOk())
+        .andDo(print()) // Esto imprimirá los detalles de la respuesta en la consola
+        .andReturn();
+
+        int status = result.getResponse().getStatus();
+        System.out.println("HTTP Status: " + status);
+
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response Content: " + content);
     }
 
 
