@@ -5,6 +5,12 @@ public class Ingrediente {
     private String nombreIngrediente;
 
     
+    public Ingrediente(Long id, String nombreIngrediente) {
+        this.id = id;
+        this.nombreIngrediente = nombreIngrediente;
+    }
+    public Ingrediente() {
+    }
     public Long getId() {
         return id;
     }
