@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/._darcs", "/.bzr", "/.hg", "/BitKeeper").denyAll()
                         //Quitar 
                         .requestMatchers(HttpMethod.GET, "/crearreceta", "/vermisrecetas/**", "/editarmireceta/**","/verreceta/**", "/detallereceta").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/publicar", "/editar/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/publicar","/receta/comentar/**" , "/editar/**").hasRole("USER")
                         //Cierre
                         .requestMatchers("/", "/home", "/login", "/testing", "/ingresar", "/listadousuario", "/crearusuario").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filtrar").permitAll()
