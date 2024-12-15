@@ -3,6 +3,7 @@ package com.duoc.seguridad_calidad.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.duoc.seguridad_calidad.dto.ComentarioReceta;
 import com.duoc.seguridad_calidad.dto.CrearReceta;
 import com.duoc.seguridad_calidad.dto.Filtro;
 import com.duoc.seguridad_calidad.dto.Ingrediente;
@@ -301,6 +303,88 @@ public class RecetaServiceTest {
         assertEquals(2, result.size());
         assertEquals("Tomate", result.get(0).getNombreIngrediente());
         verify(restTemplate, times(1)).exchange(eq(url), eq(HttpMethod.GET), eq(entity), eq(Ingrediente[].class));
+    }
+
+    @Test
+    void testComentarRecetas() {
+        // Arrange
+        String token = "Bearer mockToken";
+        String url = "http://localhost:8081/recetas/comentar";
+
+        ComentarioReceta comentario = new ComentarioReceta();
+        comentario.setComentario("Delicious!");
+        comentario.setIdReceta(1L);
+        comentario.setIdUsuario(2L);
+        comentario.setCalificacion(5);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", token);
+
+        HttpEntity<ComentarioReceta> request = new HttpEntity<>(comentario, headers);
+
+        when(restTemplate.exchange(eq(url), eq(HttpMethod.POST), eq(request), eq(Object.class)))
+                .thenReturn(ResponseEntity.ok().build());
+
+        // Act
+        recetaService.comentarRecetas(comentario, token);
+
+        // Assert
+        verify(restTemplate, times(1)).exchange(
+        eq(url),
+        eq(HttpMethod.POST),
+        argThat(actualRequest -> {
+            // Comparar headers
+            HttpHeaders actualHeaders = actualRequest.getHeaders();
+            assertEquals(MediaType.APPLICATION_JSON, actualHeaders.getContentType());
+            assertEquals(token, actualHeaders.getFirst("Authorization"));
+
+            // Comparar cuerpo
+            ComentarioReceta actualComentario = (ComentarioReceta) actualRequest.getBody();
+            assertNotNull(actualComentario);
+            assertEquals(comentario.getComentario(), actualComentario.getComentario());
+            assertEquals(comentario.getIdReceta(), actualComentario.getIdReceta());
+            assertEquals(comentario.getIdUsuario(), actualComentario.getIdUsuario());
+            assertEquals(comentario.getCalificacion(), actualComentario.getCalificacion());
+
+            return true;
+        }),
+        eq(Object.class)
+    );
+    }
+
+    @Test
+    void testObtenerComentarios() {
+        // Arrange
+        Long recetaId = 1L;
+        String url = "http://localhost:8081/recetas/obtener-comentarios?idReceta=" + recetaId;
+
+        ComentarioReceta comentario1 = new ComentarioReceta();
+        comentario1.setComentario("Amazing!");
+        comentario1.setIdReceta(recetaId);
+        comentario1.setIdUsuario(1L);
+        comentario1.setCalificacion(5);
+
+        ComentarioReceta comentario2 = new ComentarioReceta();
+        comentario2.setComentario("Good, but could be better.");
+        comentario2.setIdReceta(recetaId);
+        comentario2.setIdUsuario(2L);
+        comentario2.setCalificacion(3);
+
+        ComentarioReceta[] comentariosMock = {comentario1, comentario2};
+
+        when(restTemplate.getForObject(url, ComentarioReceta[].class)).thenReturn(comentariosMock);
+
+        // Act
+        List<ComentarioReceta> comentarios = recetaService.obtenerComentarios(recetaId);
+
+        // Assert
+        assertNotNull(comentarios);
+        assertEquals(2, comentarios.size());
+        assertEquals("Amazing!", comentarios.get(0).getComentario());
+        assertEquals("Good, but could be better.", comentarios.get(1).getComentario());
+
+        verify(restTemplate, times(1)).getForObject(url, ComentarioReceta[].class);
     }
 
 }
